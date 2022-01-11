@@ -43,7 +43,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def sparse_warp(mel_spectrogram, time_warping_para=80):
+def sparse_warp(mel_spectrogram, time_warping_para=2):
     """Spec augmentation Calculation Function.
 
     'SpecAugment' have 3 steps for audio data augmentation.
@@ -179,11 +179,11 @@ def visualization_spectrogram(mel_spectrogram, title):
       title(String): plot figure's title
     """
     # Show mel-spectrogram using librosa's specshow.
-    plt.figure(figsize=(10, 4))
-    librosa.display.specshow(librosa.power_to_db(mel_spectrogram[0, :, :, 0], ref=np.max), y_axis='mel', fmax=8000, x_axis='time')
-    plt.title(title)
-    plt.tight_layout()
-    plt.show()
+    # plt.figure(figsize=(10, 4))
+    # librosa.display.specshow(librosa.power_to_db(mel_spectrogram[0, :, :, 0], ref=np.max), y_axis='mel', fmax=8000, x_axis='time')
+    # plt.title(title)
+    # plt.tight_layout()
+    # plt.show()
 
 
 def visualization_tensor_spectrogram(mel_spectrogram, title):
@@ -195,9 +195,15 @@ def visualization_tensor_spectrogram(mel_spectrogram, title):
     """
 
     # Show mel-spectrogram using librosa's specshow.
-    plt.figure(figsize=(10, 4))
-    librosa.display.specshow(librosa.power_to_db(mel_spectrogram[0, :, :, 0], ref=np.max), y_axis='mel', fmax=8000, x_axis='time')
-    # plt.colorbar(format='%+2.0f dB')
-    plt.title(title)
-    plt.tight_layout()
+    # plt.figure(figsize=(10, 4))
+    # librosa.display.specshow(librosa.power_to_db(mel_spectrogram[0, :, :, 0], ref=np.max), y_axis='mel', fmax=8000, x_axis='time')
+    # # plt.colorbar(format='%+2.0f dB')
+    # plt.title(title)
+    # plt.tight_layout()
+    mel_spectrogram = mel_spectrogram[0, :, :, 0]
+    mel_spectrogram = np.transpose(mel_spectrogram)
+    plt.imshow(mel_spectrogram, cmap='magma')
+    plt.axis('off')
+    plt.axes().get_xaxis().set_visible(False)
+    plt.axes().get_yaxis().set_visible(False)
     plt.show()

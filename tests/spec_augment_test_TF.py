@@ -25,11 +25,11 @@ import pandas as pd
 parser = argparse.ArgumentParser(description='Spec Augment')
 parser.add_argument('--file-path', default='../../stft_label_vIMU/Jonathan 93_stft',
                     help='The audio file.')
-parser.add_argument('--time-warp-para', default=80,
+parser.add_argument('--time-warp-para', default=2,
                     help='time warp parameter W')
-parser.add_argument('--frequency-mask-para', default=100,
+parser.add_argument('--frequency-mask-para', default=10,
                     help='frequency mask parameter F')
-parser.add_argument('--time-mask-para', default=27,
+parser.add_argument('--time-mask-para', default=10,
                     help='time mask parameter T')
 parser.add_argument('--masking-line-number', default=1,
                     help='masking line number')
@@ -56,16 +56,18 @@ if __name__ == "__main__":
         print(filename)
         path_one = file_path + '/' + filename
         spectrogram = pd.read_csv(path_one)
+        spectrogram = spectrogram.to_numpy().T
         # mel_spectrogram = rgb2gray(mel_spectrogram_raw)
 
-    # reshape spectrogram shape to [batch_size, time, frequency, 1]
-    shape = spectrogram.shape
-    spectrogram = np.reshape(spectrogram, (-1, shape[0], shape[1], 1))
+        # reshape spectrogram shape to [batch_size, time, frequency, 1]
+        shape = spectrogram.shape
+        spectrogram = np.reshape(spectrogram, (-1, shape[0], shape[1], 1))
 
-    # Show Raw mel-spectrogram
-    spec_augment_tensorflow.visualization_spectrogram(mel_spectrogram=spectrogram,
-                                                      title="Raw Mel Spectrogram")
+        # Show Raw mel-spectrogram
+        # spec_augment_tensorflow.visualization_spectrogram(mel_spectrogram=spectrogram,
+        #                                                   title="Raw Mel Spectrogram")
 
-    # Show time warped & masked spectrogram
-    spec_augment_tensorflow.visualization_tensor_spectrogram(mel_spectrogram=spec_augment_tensorflow.spec_augment(spectrogram),
-                                                      title="tensorflow Warped & Masked Mel Spectrogram")
+        # Show time warped & masked spectrogram
+        new_spectrogram = spec_augment_tensorflow.spec_augment(spectrogram)
+        spec_augment_tensorflow.visualization_tensor_spectrogram(mel_spectrogram=spec_augment_tensorflow.spec_augment(spectrogram),
+                                                      title="tensorflow Warped & Masked Spectrogram")
